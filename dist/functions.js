@@ -8,7 +8,9 @@ function capitalize(string) {
 }
 
 // Returns the string reversed
-function reverseString(string) {}
+function reverseString(string) {
+  return string.split("").reverse().join("");
+}
 
 // A calculator object that contains functions for basic operations
 var calculator = {
@@ -31,35 +33,42 @@ var calculator = {
 
 // It takes a string and a shift factor and returns it with each character “shifted”
 function caesarCipher(string, shiftFactor) {
+  // prettier-ignore
+  var plainTextAlphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+  var cipherTextAlphabet = [];
+  // Build the shift Alphabet
+  plainTextAlphabet.forEach(function (letter) {
+    var newIndex = plainTextAlphabet.indexOf(letter) - shiftFactor;
+    if (newIndex < 0) {
+      newIndex = plainTextAlphabet.length - newIndex;
+    }
+    // Add the letter in the cipher alphabet
+    cipherTextAlphabet.splice(newIndex, 0, letter);
+  });
+
+  // Encrypt the string
   var splittedSring = string.split("");
   var encryptString = [];
   splittedSring.forEach(function (character) {
     // If it's a letter, encrypt
     if (/[a-zA-Z]/.test(character)) {
-      shiftLetter(character, shiftFactor);
+      shiftLetter(character);
     } else {
-      encryptString.push(character);
+      encryptString.push(character); // If it's not a letter, do nothing
     }
   });
 
-  console.log(encryptString.join(""));
+  // Return the encrypt string
+  return encryptString.join("");
 
-  function shiftLetter(letter, shiftFactor) {
-    // prettier-ignore
-    var plainTextAlphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-    var cipherTextAlphabet = [];
-    // Build the shift Alphabet
-    plainTextAlphabet.forEach(function (letter) {
-      var newIndex = plainTextAlphabet.indexOf(letter) - shiftFactor;
-      if (newIndex < 0) {
-        newIndex = plainTextAlphabet.length - newIndex;
-      }
-      cipherTextAlphabet.splice(newIndex, 0, letter);
-    });
-
+  function shiftLetter(letter) {
+    // Transform the letter in lowerCase to locate it more easy
     var letterLowerCase = letter.toLowerCase();
     var letterIndex = plainTextAlphabet.indexOf(letterLowerCase);
-    var cipherLetter = letter === letter.toUpperCase() ? cipherTextAlphabet[letterIndex].toUpperCase() : cipherTextAlphabet[letterIndex];
+    var cipherLetter =
+    // The original letter was upperCase?
+    letter === letter.toUpperCase() ? cipherTextAlphabet[letterIndex].toUpperCase() // Then add the encrypt letter in upperCase
+    : cipherTextAlphabet[letterIndex]; // Add it normaly
     encryptString.push(cipherLetter);
   }
 }
